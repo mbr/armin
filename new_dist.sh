@@ -6,26 +6,33 @@ set -e
 # standard of 022
 umask 022
 
-BASENAME=`basename $0`
+BASENAME=$(basename $0)
 
 if [ "$#" -ne 1 ] || ! [ "$1" ]; then
   echo "usage: ${BASENAME} TARGETDIR"
   exit 1;
 fi;
 
-# Destination directory
-TARGET="$1"
-SUITE=wheezy
-MIRROR=http://http.debian.net/debian/
-ARCH=armh:%s/f
-VARIANT=minbase
+TARGETDIR="$1"
+CONFFILE=raspi.config
+IN_CHROOT="sudo chroot ${TARGETDIR} /usr/bin/env -i PATH=/bin:/usr/bin:/sbin:/usr/sbin DEBIAN_FRONTEND=noninteractive"
 
-# create new dir first
-mkdir -p "${TARGET}/etc/apt/"
+multistrap -f ${CONFFILE} -d ${TARGETDIR}
 
-# setup apt mirrors
-cat <<EOF > "${TARGET}/etc/apt/sources.list"
-deb http://http.debian.net/debian/ ${SUITE} main contrib non-free
-EOF
+# copy qemu into chroot to make it possible to run stuff
+cp $(which qemu-arm-static) ${TARGETDIR}/usr/bin
 
-debootstrap --verbose --foreign --arch "${ARCH}" --variant="${VARIANT}" "${SUITE}" "${TARGET}" "${MIRROR}"
+# create an empty machine id, otherwise systemd.deb will try to generate one
+# we erase it afterwards
+echo '0123456789abcdef0123456789abcdef' > ${TARGETDIR}/etc/machine-id
+
+# FIXME: fakechroot would be nice here
+sudo chown root.root ${TARGETDIR} -R
+
+# prime dash for setup, otherwise it will fail
+${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
+
+${IN_CHROOT} /usr/bin/dpkg --configure -a
+
+# remove machine id
+rm ${TARGETDIR}/etc/machine-id
