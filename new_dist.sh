@@ -6,25 +6,29 @@ set -e
 # standard of 022
 umask 022
 
-BASENAME=$(basename $0)
-
+# ensure we have a valid target directory
 if [ "$#" -ne 1 ] || ! [ "$1" ]; then
-  echo "usage: ${BASENAME} TARGETDIR"
+  echo "usage: $(basenaem $0) TARGETDIR"
   exit 1;
 fi;
 
 TARGETDIR="$1"
 CONFFILE=raspi.config
 IN_CHROOT="sudo chroot ${TARGETDIR} /usr/bin/env -i PATH=/bin:/usr/bin:/sbin:/usr/sbin DEBIAN_FRONTEND=noninteractive"
+MACHINE_ID_FILE=${TARGETDIR}/etc/machine-id
 
-multistrap -f ${CONFFILE} -d ${TARGETDIR}
+# we need a
+QEMU_STATIC=$(which qemu-arm-static)
+QEMU_CHROOT=${TARGETDIR}/usr/bin/qemu-arm-static
+
+#multistrap -f ${CONFFILE} -d ${TARGETDIR}
 
 # copy qemu into chroot to make it possible to run stuff
-cp $(which qemu-arm-static) ${TARGETDIR}/usr/bin
+cp ${QEMU_STATIC} ${QEMU_CHROOT}
 
 # create an empty machine id, otherwise systemd.deb will try to generate one
 # we erase it afterwards
-echo '0123456789abcdef0123456789abcdef' > ${TARGETDIR}/etc/machine-id
+echo '0123456789abcdef0123456789abcdef' > ${MACHINE_ID_FILE}
 
 # FIXME: fakechroot would be nice here
 sudo chown root.root ${TARGETDIR} -R
@@ -34,5 +38,5 @@ ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
-# remove machine id
-rm ${TARGETDIR}/etc/machine-id
+# files no longer required
+sudo rm -f ${MACHINE_ID_FILE} ${QEMU_CHROOT}
