@@ -21,7 +21,7 @@ MACHINE_ID_FILE=${TARGETDIR}/etc/machine-id
 QEMU_STATIC=$(which qemu-arm-static)
 QEMU_CHROOT=${TARGETDIR}/usr/bin/qemu-arm-static
 
-#multistrap -f ${CONFFILE} -d ${TARGETDIR}
+multistrap -f ${CONFFILE} -d ${TARGETDIR}
 
 # copy qemu into chroot to make it possible to run stuff
 cp ${QEMU_STATIC} ${QEMU_CHROOT}
