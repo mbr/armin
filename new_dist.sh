@@ -2,10 +2,22 @@
 
 set -e
 
-TARGET=target
+# To ensure all files end up with the correct permissions, set the umask to the
+# standard of 022
+umask 022
+
+BASENAME=`basename $0`
+
+if [ "$#" -ne 1 ] || ! [ "$1" ]; then
+  echo "usage: ${BASENAME} TARGETDIR"
+  exit 1;
+fi;
+
+# Destination directory
+TARGET="$1"
 SUITE=wheezy
 MIRROR=http://http.debian.net/debian/
-ARCH=armhf
+ARCH=armh:%s/f
 VARIANT=minbase
 
 # create new dir first
