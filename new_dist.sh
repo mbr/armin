@@ -25,7 +25,7 @@ mkdir -p "${TARGET}/etc/apt/"
 
 # setup apt mirrors
 cat <<EOF > "${TARGET}/etc/apt/sources.list"
-deb http://http.debian.net/debian/ jessie main contrib non-free
+deb http://http.debian.net/debian/ ${SUITE} main contrib non-free
 EOF
 
 debootstrap --verbose --foreign --arch "${ARCH}" --variant="${VARIANT}" "${SUITE}" "${TARGET}" "${MIRROR}"
