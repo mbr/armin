@@ -9,7 +9,7 @@ ARCH=armhf
 VARIANT=minbase
 
 # create new dir first
-mkdir -p "${TARGET}"
+mkdir -p "${TARGET}/etc/apt/"
 
 # setup apt mirrors
 cat <<EOF > "${TARGET}/etc/apt/sources.list"
