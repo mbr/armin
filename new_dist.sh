@@ -84,7 +84,7 @@ ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
 # set root password
-echo "root:${ROOT_PASSWORD" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
+echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
 # files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}"
