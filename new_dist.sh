@@ -69,18 +69,19 @@ EOF
 QEMU_STATIC=$(which qemu-arm-static)
 QEMU_CHROOT="${TARGETDIR}/usr/bin/qemu-arm-static"
 IN_CHROOT="sudo chroot ${TARGETDIR} /usr/bin/env -i PATH=/bin:/usr/bin:/sbin:/usr/sbin DEBIAN_FRONTEND=noninteractive"
+SSH_HOST_KEYS="ssh_host_rsa_key ssh_host_dsa_key ssh_host_ecdsa_key ssh_host_ed25519_key"
 
 # 2.1 copy qemu into chroot to make it possible to run stuff
 cp "${QEMU_STATIC}" "${QEMU_CHROOT}"
 
-# 2. create an empty machine id, otherwise systemd.deb will try to generate
+# 2.2 create an empty machine id, otherwise systemd.deb will try to generate
 # one. we erase it afterwards
 echo '0123456789abcdef0123456789abcdef' > "${MACHINE_ID_FILE}"
 
-# 2.2 work as root
+# 2.3 work as root
 sudo chown root.root "${TARGETDIR}" -R
 
-# 2.3 setup networking
+# 2.4 setup networking
 cat >> "${TARGETDIR}/etc/hosts" <<EOF
 127.0.0.1  localhost
 127.0.1.1  ${HOSTNAME}
@@ -107,18 +108,29 @@ wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
 iface default inet dhcp
 EOF
 
-# 2.4 prime dash for setup, otherwise postinst will fail
+# 2.5 we need to fake some openssh-server keys, because /dev/urandom is not
+# available
+mkdir -p "${TARGETDIR}/etc/ssh"
+for key in ${SSH_HOST_KEYS}; do
+  touch "${TARGETDIR}/etc/ssh/$key"
+done;
+
+${IN_CHROOT} /bin/bash
+
+# 2.6 prime dash for setup, otherwise postinst will fail
 ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 
-# 2.5 configure all packages
+# 2.7 configure all packages
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
-# 2.6 set root password
+# 2.8 set root password
 echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
-# 2.7 cleanup files no longer required
-sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}"
-
+# 2.9 cleanup files no longer required
+sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" $SSH_HOST_KEYS
+for key in ${SSH_HOST_KEYS}; do
+  rm "${TARGETDIR}/etc/ssh/$key"
+done;
 
 
 ### STEP 3: create image file
