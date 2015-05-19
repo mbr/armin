@@ -32,3 +32,4 @@ Information taken from:
 * http://sjoerd.luon.net/posts/2015/02/debian-jessie-on-rpi2/
 * https://unix.stackexchange.com/questions/41889/how-can-i-chroot-into-a-filesystem-with-a-different-architechture
 * https://raspberrypi.stackexchange.com/questions/10442/what-is-the-boot-sequence
+* http://3gfp.com/wp/2014/07/formatting-sd-cards-for-speed-and-lifetime/
