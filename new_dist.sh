@@ -29,6 +29,7 @@ fi;
 ### STEP 1: bootstrapping with multistrap and adding files
 CONFFILE=raspi.config
 MACHINE_ID_FILE="${TARGETDIR}/etc/machine-id"
+ROOT_PASSWORD=raspberry
 
 # we need qemu for chroot
 QEMU_STATIC=$(which qemu-arm-static)
@@ -79,11 +80,14 @@ sudo chown root.root "${TARGETDIR}" -R
 # prime dash for setup, otherwise it will fail
 ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 
+# configure all packages
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
+
+# set root password
+echo "root:${ROOT_PASSWORD" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
 # files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}"
-
 
 
 ### STEP 3: create image file
