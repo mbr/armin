@@ -83,3 +83,45 @@ ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
 # files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}"
+
+
+
+### STEP 3: create image file
+
+# sizes are in megabytes
+IMG_SIZE=512
+BOOT_PART_SIZE=32
+IMG="$(basename ${TARGETDIR}).img"
+BOOT_TMP_IMG="${IMG}.tmp.vfat"
+
+# using a sparse file to save space
+truncate -s${IMG_SIZE}M "${IMG}"
+
+# create two partitions
+parted --script -- "${IMG}" mktable msdos mkpart primary fat32 4M $((4+${BOOT_PART_SIZE}))M mkpart primary ext4 $((4+${BOOT_PART_SIZE}))M -0
+
+PARTS=$(kpartx -av "${IMG}" | cut -d ' ' -f 3)
+DEV_FW=/dev/mapper/$(echo $PARTS | cut -d ' ' -f 1)
+DEV_ROOT=/dev/mapper/$(echo $PARTS | cut -d ' ' -f 2)
+MOUNT_FW=$IMG-mount-firmware/
+MOUNT_ROOT=$IMG-mount-root/
+
+# create filesystems
+mkfs.vfat ${DEV_FW}
+mkfs.ext4 ${DEV_ROOT}
+
+# mount
+mkdir -p "$MOUNT_FW" "$MOUNT_ROOT"
+mount "$DEV_FW" "$MOUNT_FW"
+mount "$DEV_ROOT" "$MOUNT_ROOT"
+
+# copy over files
+rsync -rav "${TARGETDIR}/boot/firmware/" "$MOUNT_FW"
+rsync -rav --exclude="boot/firmware/" "${TARGETDIR}/" "$MOUNT_ROOT"
+mkdir -p "$MOUNT_ROOT"/boot/firmware
+
+# cleanup
+umount "$DEV_ROOT"
+umount "$DEV_FW"
+rmdir "$MOUNT_FW" "$MOUNT_ROOT"
+kpartx -d "${IMG}"
