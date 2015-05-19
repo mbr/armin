@@ -119,15 +119,12 @@ for key in ${SSH_HOST_KEYS}; do
   touch "${TARGETDIR}/etc/ssh/$key"
 done;
 
-${IN_CHROOT} /bin/bash
-
 # 2.6 prime dash for setup, otherwise postinst will fail
 ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 
 # 2.7 disable daemon autostart
 cat > "${TARGETDIR}/usr/sbin/policy-rc.d" <<EOF
 #!/bin/sh
-echo "Not starting daemon, in chroot." >&2
 exit 101
 EOF
 
