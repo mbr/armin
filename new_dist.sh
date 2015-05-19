@@ -65,6 +65,12 @@ EOF
 # setup firmware script
 install "install-firmware-kernel" -D "${TARGETDIR}/etc/initramfs/post-update.d/install-firmware-kernel"
 
+# add kernel commandline
+cat >> "${FIRMWARE_DIR}"/cmdline.txt <<EOF
+dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+EOF
+
+
 ### STEP 2: chroot stage-two
 
 # FIXME: fakechroot would be nice here
