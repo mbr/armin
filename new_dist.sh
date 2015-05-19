@@ -61,6 +61,10 @@ cat >> "${TARGETDIR}/etc/fstab" <<EOF
 /dev/mmcblk0p2  /               ext4    defaults,ro,noatime,nodiratime,errors=remount-ro  0   1
 EOF
 
+# set the machine type for flash kernel, otherwise it will need to look it
+# up from the non-existant /proc/cpuinfo
+echo BCM2709 > "${TARGETDIR}/etc/flash-kernel/machine"
+
 ### STEP 2: chroot stage-two
 
 # FIXME: fakechroot would be nice here
@@ -72,5 +76,4 @@ ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
 # files no longer required
-sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/proc/cpuinfo"
-
+sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}"
