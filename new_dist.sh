@@ -61,9 +61,8 @@ cat >> "${TARGETDIR}/etc/fstab" <<EOF
 /dev/mmcblk0p2  /               ext4    defaults,ro,noatime,nodiratime,errors=remount-ro  0   1
 EOF
 
-# set the machine type for flash kernel, otherwise it will need to look it
-# up from the non-existant /proc/cpuinfo
-echo BCM2709 > "${TARGETDIR}/etc/flash-kernel/machine"
+# setup firmware script
+install "install-firmware-kernel" -D "${TARGETDIR}/etc/initramfs/post-update.d/install-firmware-kernel"
 
 ### STEP 2: chroot stage-two
 

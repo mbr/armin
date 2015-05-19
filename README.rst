@@ -13,6 +13,14 @@ The ``raspberrypi-firmware-nokernel`` package unfortunately seems to be either
 obsolete or buggy; the .postinst scripts deletes all the firmware it installed
 from /boot/firmware.xchat
 
+flash-kernel
+~~~~~~~~~~~~
+
+The current flash-kernel script does not properly install the kernel to
+/boot/firmware/kernel7.img because it (rightfully) refuses to move the kernel
+image managed by apt. Right now, as a workaround, flash-kernel is not
+installed, but a small script added instead.
+
 
 Sources
 -------

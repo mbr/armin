@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+KERNEL_IMG=$(ls /boot/vmlinuz-* | sort -V | head -n1)
+FIRMWARE_DEST="/boot/firmware/kernel7.img"
+
+cp -v "${KERNEL_IMG}" "${FIRMWARE_DEST}"
