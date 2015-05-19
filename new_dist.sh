@@ -120,14 +120,21 @@ ${IN_CHROOT} /bin/bash
 # 2.6 prime dash for setup, otherwise postinst will fail
 ${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install
 
-# 2.7 configure all packages
+# 2.7 disable daemon autostart
+cat > "${TARGETDIR}/usr/sbin/policy-rc.d" <<EOF
+#!/bin/sh
+echo "Not starting daemon, in chroot." >&2
+exit 101
+EOF
+
+# 2.8 configure all packages
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
-# 2.8 set root password
+# 2.9 set root password
 echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
-# 2.9 cleanup files no longer required
-sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" $SSH_HOST_KEYS
+# 2.10 cleanup files no longer required
+sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/usr/sbin/policy-rc.d"
 for key in ${SSH_HOST_KEYS}; do
   rm "${TARGETDIR}/etc/ssh/$key"
 done;
