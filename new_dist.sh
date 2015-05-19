@@ -57,6 +57,7 @@ echo '0123456789abcdef0123456789abcdef' > "${MACHINE_ID_FILE}"
 
 # add an fstab
 cat >> "${TARGETDIR}/etc/fstab" <<EOF
+proc            /proc           proc    defaults          0       0
 /dev/mmcblk0p1  /boot/firmware  vfat    defaults,ro,noatime,nodiratime,errors=remount-ro  0   2
 /dev/mmcblk0p2  /               ext4    defaults,ro,noatime,nodiratime,errors=remount-ro  0   1
 EOF
