@@ -62,6 +62,10 @@ proc            /proc           proc    defaults          0       0
 /dev/mmcblk0p2  /               ext4    defaults,rw,noatime,nodiratime,errors=remount-ro  0   1
 EOF
 
+# 1.6 create /dev/null
+# (otherwise scripts writin to /dev/null will create it for us)
+mknod "${TARGETDIR}/dev/null" c 1 3
+
 
 
 ### STEP 2: chroot stage-two
