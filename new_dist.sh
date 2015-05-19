@@ -53,7 +53,7 @@ cp "${QEMU_STATIC}" "${QEMU_CHROOT}"
 
 # create an empty machine id, otherwise systemd.deb will try to generate one
 # we erase it afterwards
-echo '0123456789abcdef0123456789abcdef' > ${MACHINE_ID_FILE}
+echo '0123456789abcdef0123456789abcdef' > "${MACHINE_ID_FILE}"
 
 ### STEP 2: chroot stage-two
 
