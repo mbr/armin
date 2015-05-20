@@ -160,7 +160,7 @@ EOF
 
 # 2.13 regenerate ssh keys upon daemon start
 mkdir -p "${TARGETDIR}/etc/systemd/system/ssh.service.d/"
-cat >> "${TARGETDIR}/etc/systemd/system/getty@.service.d/gen-hostkeys.conf" <<EOF
+cat >> "${TARGETDIR}/etc/systemd/system/ssh.service.d/gen-hostkeys.conf" <<EOF
 [Unit]
 After=rng-tools.service
 
