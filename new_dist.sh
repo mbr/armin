@@ -14,6 +14,10 @@ run_hooks() {
   done;
 }
 
+chroot_copy() {
+  install -m 0644 -D "${HOOKDIR}/files/$1" "${CHROOTDIR}/$2/$1"
+}
+
 # To ensure all files end up with the correct permissions, set the umask to the
 # standard of 022
 umask 022
