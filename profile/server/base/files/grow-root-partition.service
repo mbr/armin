@@ -1,0 +1,11 @@
+[Unit]
+Description=Extend root partition to end of SD card
+ConditionPathExists=/etc/need-grow-root
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/grow-root-partition
+ExecStopPost=rm -f /etc/need-grow-root
+
+[Install]
+WantedBy=multi-user.target

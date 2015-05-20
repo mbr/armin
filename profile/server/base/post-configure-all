@@ -6,5 +6,11 @@ echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 # enable dmesg output on tty1
 chroot_copy noclear.conf /etc/systemd/system/getty@.service.d
 
+# enable automatic partition resize upon boot
+chroot_install grow-root-partition.sh /usr/local/sbin
+chroot_copy grow-root-partition.service /etc/systemd/system
+systemctl enable grow-root-partition.service
+touch /etc/need-grow-root
+
 # cleanup machine id file (systemd is configured)
 rm -f "/etc/machine-id"

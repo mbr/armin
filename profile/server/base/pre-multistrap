@@ -1,0 +1,3 @@
+# parted contains partprobe as well
+
+DEBIAN_PACKAGES="${DEBIAN_PACKAGES} parted"
