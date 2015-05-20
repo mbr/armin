@@ -49,7 +49,7 @@ unzip -o -j -d "${FIRMWARE_DIR}" "${FW_ZIP}" "${FW_PATH}/boot/*.bin" "${FW_PATH}
 # copy over config.txt
 cp config.txt "${FIRMWARE_DIR}/config.txt"
 cat >> "${FIRMWARE_DIR}"/cmdline.txt <<EOF
-dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty7 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait quiet
 EOF
 
 # 1.4 setup firmware script
