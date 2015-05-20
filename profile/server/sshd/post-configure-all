@@ -1,3 +1,6 @@
+set -x
+
+
 # enable random generator so that we have entropy when generating host keys
 echo >> /etc/modules <<EOF
 # load hw-rng module to make it possible to generate ssh-host-keys on boot
@@ -31,19 +34,7 @@ After=ssh.service
 EOF
 
 # install hostkeys-banner script
-cat >> "${CHROOTDIR}/usr/local/bin/genissue" <<EOF
-#!/bin/sh
-
-ISSUE=/etc/issue
-printf '%b' "\033[36;1mDebian\033[0m GNU/Linux $(cat /etc/debian_version) \033[33;1m\\\\n\033[0m \\\\l\n\n" > "${ISSUE}"
-
-for i in /etc/ssh/ssh_host_*_key; do
-  # 2048 2d:01:fe:d3:d4:68:b3:e6:11:59:01:bc:8a:b0:d2:45  root@marc-desktop (RSA)
-  set $(ssh-keygen -l -f $i)
-  printf '%b' "\033[35;1m$2\033[0m $4/$1\n" >> "${ISSUE}"
-done;
-EOF
-chmod a+x "${CHROOTDIR}/usr/local/bin/genissue"
+install -D "${HOOKDIR}/files/genissue" "${CHROOTDIR}/usr/local/bin/genissue"
 
 # activate hostkeys-banner script
 mkdir -p "${CHROOTDIR}/etc/systemd/system/ssh.service.d/"
