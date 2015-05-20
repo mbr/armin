@@ -9,8 +9,8 @@ chroot_copy noclear.conf /etc/systemd/system/getty@.service.d
 # enable automatic partition resize upon boot
 chroot_install grow-root-partition.sh /usr/local/sbin
 chroot_copy grow-root-partition.service /etc/systemd/system
-systemctl enable grow-root-partition.service
-touch /etc/need-grow-root
+${IN_CHROOT} systemctl enable grow-root-partition.service
+${IN_CHROOT} touch /etc/need-grow-root
 
 # cleanup machine id file (systemd is configured)
-rm -f "/etc/machine-id"
+rm -f "${CHROOTDIR}/etc/machine-id"
