@@ -1,9 +1,9 @@
 [Unit]
 Description=Generates missing ssh_host_*_keys.
-Type=oneshot
 After=rng-tools.service
 
 [Service]
+Type=oneshot
 ExecStart=/usr/bin/ssh-keygen -A
 
 [Install]
