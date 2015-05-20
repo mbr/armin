@@ -18,14 +18,9 @@ FIRMWARE_DIR="${CHROOTDIR}/boot/firmware"
 mkdir -p "${FIRMWARE_DIR}/boot/firmware"
 unzip -o -j -d "${FIRMWARE_DIR}" "${FW_ZIP}" "${FW_PATH}/boot/*.bin" "${FW_PATH}/boot/*.dat" "${FW_PATH}/boot/*.elf"
 
-# setup config.txt
-cat > "${FIRMWARE_DIR}/config.txt" <<EOF
-EOF
-
 # setup kernel commandline
-cat > "${FIRMWARE_DIR}/cmdline.txt" <<EOF
-dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty7 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait quiet
-EOF
+chroot_copy cmdline.txt /boot
+chroot_copy config.txt /boot
 
 # install firmware setup script
-install "${HOOKDIR}/install-firmware-kernel" -D "${CHROOTDIR}/etc/initramfs/post-update.d/install-firmware-kernel"
+chroot_install install-firmware-kernel /etc/initramfs/post-update.d
