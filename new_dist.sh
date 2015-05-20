@@ -152,6 +152,23 @@ cat >> "${TARGETDIR}/etc/systemd/system/getty@.service.d/noclear.conf" <<EOF
 TTYVTDisallocate=no
 EOF
 
+# 2.12 enable random generator
+echo >> /etc/modules <<EOF
+# load hw-rng module to make it possible to generate ssh-host-keys on boot
+bcm2708_rng
+EOF
+
+# 2.13 regenerate ssh keys upon daemon start
+mkdir -p "${TARGETDIR}/etc/systemd/system/ssh.service.d/"
+cat >> "${TARGETDIR}/etc/systemd/system/getty@.service.d/gen-hostkeys.conf" <<EOF
+[Unit]
+After=rng-tools.service
+
+[Service]
+ExecStartPre=/usr/bin/ssh-keygen -A
+EOF
+
+
 # 2.12 cleanup files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/usr/sbin/policy-rc.d"
 for key in ${SSH_HOST_KEYS}; do
