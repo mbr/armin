@@ -72,7 +72,7 @@ run_hooks post-multistrap
 ### STEP 2: chroot configuration
 QEMU_STATIC=$(which qemu-arm-static)
 QEMU_CHROOT="${CHROOTDIR}/usr/bin/qemu-arm-static"
-IN_CHROOT="sudo chroot ${CHROOTDIR} /usr/bin/env -i PATH=/bin:/usr/bin:/sbin:/usr/sbin DEBIAN_FRONTEND=noninteractive"
+IN_CHROOT="chroot ${CHROOTDIR} /usr/bin/env -i PATH=/bin:/usr/bin:/sbin:/usr/sbin DEBIAN_FRONTEND=noninteractive"
 
 # 2.1 copy qemu into chroot to make it possible to run stuff
 cp "${QEMU_STATIC}" "${QEMU_CHROOT}"
