@@ -1,7 +1,7 @@
 MACHINE_ID_FILE="${CHROOTDIR}/etc/machine-id"
 
 # create proper fstab
-cat >> "${CHROOTDIR}/etc/fstab" <<EOF
+cat > "${CHROOTDIR}/etc/fstab" <<EOF
 proc            /proc           proc    defaults          0       0
 /dev/mmcblk0p1  /boot/firmware  vfat    defaults,rw,noatime,nodiratime,errors=remount-ro  0   2
 /dev/mmcblk0p2  /               ext4    defaults,rw,noatime,nodiratime,errors=remount-ro  0   1
