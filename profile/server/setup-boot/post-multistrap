@@ -19,8 +19,8 @@ mkdir -p "${FIRMWARE_DIR}/boot/firmware"
 unzip -o -j -d "${FIRMWARE_DIR}" "${FW_ZIP}" "${FW_PATH}/boot/*.bin" "${FW_PATH}/boot/*.dat" "${FW_PATH}/boot/*.elf"
 
 # setup kernel commandline
-chroot_copy cmdline.txt /boot
-chroot_copy config.txt /boot
+chroot_copy cmdline.txt /boot/firmware
+chroot_copy config.txt /boot/firmware
 
 # install firmware setup script
 chroot_install install-firmware-kernel /etc/initramfs/post-update.d
