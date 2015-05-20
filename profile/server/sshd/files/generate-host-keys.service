@@ -4,7 +4,7 @@ Type=oneshot
 After=rng-tools.service
 
 [Service]
-Exec=/usr/bin/ssh-keygen -A
+ExecStart=/usr/bin/ssh-keygen -A
 
 # generates a new /etc/issue after each run. if it fails, oh well
 ExecStartPost=-/usr/local/bin/genissue
