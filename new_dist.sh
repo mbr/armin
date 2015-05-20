@@ -19,11 +19,12 @@ BASEDIR="$(dirname $(readlink -f $0))"
 HOSTNAME=raspberrypi
 
 
+
 ### STEP 0: download firmware
 FW_REV=$(git ls-remote https://github.com/raspberrypi/firmware master | cut -f1)
 FW_SOURCE="https://github.com/raspberrypi/firmware/archive/${FW_REV}.zip"
 FW_PATH="firmware-${FW_REV}"
-FW_ZIP="${BASENAME}/${FW_PATH}.zip"
+FW_ZIP="${BASEDIR}/${FW_PATH}.zip"
 
 if ! [ -e "${FW_ZIP}" ]; then
   echo "Downloading latest firmware (master branch): ${FW_REV}"
