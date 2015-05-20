@@ -33,4 +33,4 @@ EOF
 
 # systemd-timedated will compain if /etc/localtime is not a symlink
 rm -f ${CHROOTDIR}/etc/localtime
-ln -s ${CHROOTDIR}/usr/share/zoneinfo/UTC /etc/localtime
+ln -s /usr/share/zoneinfo/UTC ${CHROOTDIR}/etc/localtime
