@@ -152,6 +152,11 @@ cat >> "${TARGETDIR}/etc/systemd/system/getty@.service.d/noclear.conf" <<EOF
 TTYVTDisallocate=no
 EOF
 
+cat >> "${TARGETDIR}/etc/systemd/system/getty@.service.d/after-ssh.conf" <<EOF
+[Unit]
+After=ssh.service
+EOF
+
 # 2.12 enable random generator
 echo >> /etc/modules <<EOF
 # load hw-rng module to make it possible to generate ssh-host-keys on boot
@@ -168,7 +173,28 @@ After=rng-tools.service
 ExecStartPre=/usr/bin/ssh-keygen -A
 EOF
 
-# 2.14 cleanup files no longer required
+# 2.14 install hostkeys-banner script
+cat >> "${TARGETDIR}/usr/local/bin/genissue" <<EOF
+#!/bin/sh
+
+ISSUE=/etc/issue
+printf '%b' "\033[36;1mDebian\033[0m GNU/Linux $(cat /etc/debian_version) \033[33;1m\\\\n\033[0m \\\\l\n\n" > "${ISSUE}"
+
+for i in /etc/ssh/ssh_host_*_key; do
+  # 2048 2d:01:fe:d3:d4:68:b3:e6:11:59:01:bc:8a:b0:d2:45  root@marc-desktop (RSA)
+  set $(ssh-keygen -l -f $i)
+  printf '%b' "\033[35;1m$2\033[0m $4/$1\n" >> "${ISSUE}"
+done;
+EOF
+chmod a+x "${TARGETDIR}/usr/local/bin/genissue"
+
+mkdir -p "${TARGETDIR}/etc/systemd/system/ssh.service.d/"
+cat >> "${TARGETDIR}/etc/systemd/system/ssh.service.d/update-issue.conf" <<EOF
+[Service]
+ExecStartPost=/usr/local/bin/genissue
+EOF
+
+# 2.15 cleanup files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/usr/sbin/policy-rc.d"
 for key in ${SSH_HOST_KEYS}; do
   rm "${TARGETDIR}/etc/ssh/$key"
