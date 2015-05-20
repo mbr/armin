@@ -95,7 +95,7 @@ rm -f "${QEMU_CHROOT}" "${CHROOTDIR}/usr/sbin/policy-rc.d"
 # sizes are in megabytes
 IMG_SIZE=512
 BOOT_PART_SIZE=32
-IMG="$(TARGETDIR)/${PROFILE}-$(date +'%Y-%m-%d').img"
+IMG="${TARGETDIR}/${PROFILE}-$(date +'%Y-%m-%d').img"
 
 # 3.1 using a sparse file to save space, create two partitions
 truncate -s${IMG_SIZE}M "${IMG}"
