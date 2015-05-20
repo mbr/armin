@@ -5,7 +5,7 @@ ConditionPathExists=/etc/need-grow-root
 [Service]
 Type=oneshot
 ExecStart=/usr/sbin/grow-root-partition
-ExecStopPost=rm -f /etc/need-grow-root
+ExecStopPost=/bin/rm -f /etc/need-grow-root
 
 [Install]
 WantedBy=multi-user.target
