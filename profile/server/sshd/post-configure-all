@@ -14,11 +14,13 @@ sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "${CHROOTDIR}/etc/ssh/sshd_co
 
 # install systemd files
 install -D -m=0644 "${HOOKDIR}/files/generate-host-keys.service" "${CHROOTDIR}/etc/systemd/system/generate-host-keys.service"
+install -D -m=0644 "${HOOKDIR}/files/update-issue.service" "${CHROOTDIR}/etc/systemd/system/update-issue.service"
 install -D -m=0644 "${HOOKDIR}/files/tty-after-keygen.conf" "${CHROOTDIR}/etc/systemd/system/getty@.service.d/tty-after-keygen.conf"
 install -D -m=0644 "${HOOKDIR}/files/keygen-first.conf" "${CHROOTDIR}/etc/systemd/system/ssh@.service.d/keygen-first.conf"
 install -D -m=0644 "${HOOKDIR}/files/keygen-first.conf" "${CHROOTDIR}/etc/systemd/system/ssh.service.d/keygen-first.conf"
 
 ${IN_CHROOT} systemctl enable generate-host-keys.service
+${IN_CHROOT} systemctl enable update-issue.service
 
 # install genissue script
 install -D "${HOOKDIR}/files/genissue" "${CHROOTDIR}/usr/local/bin/genissue"

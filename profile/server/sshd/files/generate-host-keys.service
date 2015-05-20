@@ -6,8 +6,5 @@ After=rng-tools.service
 [Service]
 ExecStart=/usr/bin/ssh-keygen -A
 
-# generates a new /etc/issue after each run. if it fails, oh well
-ExecStartPost=-/usr/local/bin/genissue
-
 [Install]
 WantedBy=multi-user.target
