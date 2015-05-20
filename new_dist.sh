@@ -87,7 +87,6 @@ run_hooks post-configure-all
 
 # 2.6 cleanup
 rm -f "${QEMU_CHROOT}" "${CHROOTDIR}/usr/sbin/policy-rc.d"
-exit 0
 
 
 
