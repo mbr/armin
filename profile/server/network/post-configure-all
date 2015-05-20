@@ -30,3 +30,7 @@ wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
 # use dhcp on default wpa supplicant network
 iface default inet dhcp
 EOF
+
+# systemd-timedated will compain if /etc/localtime is not a symlink
+rm -f ${CHROOTDIR}/etc/localtime
+ln -s ${CHROOTDIR}/usr/share/zoneinfo/UTC /etc/localtime
