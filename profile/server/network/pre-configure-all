@@ -1,0 +1,2 @@
+# setup hostname
+echo "${HOSTNAME}" > "${CHROOTDIR}/etc/hostname"

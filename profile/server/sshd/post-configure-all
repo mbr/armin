@@ -1,0 +1,53 @@
+# enable random generator so that we have entropy when generating host keys
+echo >> /etc/modules <<EOF
+# load hw-rng module to make it possible to generate ssh-host-keys on boot
+bcm2708_rng
+EOF
+
+# regenerate ssh keys upon daemon start
+mkdir -p "${CHROOTDIR}/etc/systemd/system/ssh.service.d/"
+cat >> "${CHROOTDIR}/etc/systemd/system/ssh.service.d/gen-hostkeys.conf" <<EOF
+[Unit]
+After=rng-tools.service
+
+[Service]
+ExecStartPre=/usr/bin/ssh-keygen -A
+EOF
+
+# cleanup fake ssh keys
+for key in ${SSH_HOST_KEYS}; do
+  rm "${CHROOTDIR}/etc/ssh/$key"
+done;
+
+# allow root login via ssh
+sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "${CHROOTDIR}/etc/ssh/sshd_config"
+
+# ensure tty is started after ssh (useful because of genissue script)
+# note that "After" does not require the service to be started; if ssh
+# fails to come up we still get to log in!
+cat >> "${CHROOTDIR}/etc/systemd/system/getty@.service.d/after-ssh.conf" <<EOF
+[Unit]
+After=ssh.service
+EOF
+
+# install hostkeys-banner script
+cat >> "${CHROOTDIR}/usr/local/bin/genissue" <<EOF
+#!/bin/sh
+
+ISSUE=/etc/issue
+printf '%b' "\033[36;1mDebian\033[0m GNU/Linux $(cat /etc/debian_version) \033[33;1m\\\\n\033[0m \\\\l\n\n" > "${ISSUE}"
+
+for i in /etc/ssh/ssh_host_*_key; do
+  # 2048 2d:01:fe:d3:d4:68:b3:e6:11:59:01:bc:8a:b0:d2:45  root@marc-desktop (RSA)
+  set $(ssh-keygen -l -f $i)
+  printf '%b' "\033[35;1m$2\033[0m $4/$1\n" >> "${ISSUE}"
+done;
+EOF
+chmod a+x "${CHROOTDIR}/usr/local/bin/genissue"
+
+# activate hostkeys-banner script
+mkdir -p "${CHROOTDIR}/etc/systemd/system/ssh.service.d/"
+cat >> "${CHROOTDIR}/etc/systemd/system/ssh.service.d/update-issue.conf" <<EOF
+[Service]
+ExecStartPost=/usr/local/bin/genissue
+EOF

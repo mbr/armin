@@ -1,0 +1,8 @@
+SSH_HOST_KEYS="ssh_host_rsa_key ssh_host_dsa_key ssh_host_ecdsa_key ssh_host_ed25519_key"
+
+# we need to fake some openssh-server keys, because /dev/urandom is not
+# available
+mkdir -p "${CHROOTDIR}/etc/ssh"
+for key in ${SSH_HOST_KEYS}; do
+  touch "${CHROOTDIR}/etc/ssh/$key"
+done;

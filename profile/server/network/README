@@ -1,0 +1,3 @@
+Ensures the system is capable of starting up its network interfaces. If automatic configuration fails, provides the bare minimum of tools required to setup manually via keyboard.
+
+Manages both ethernet and wifi.

@@ -1,0 +1,1 @@
+DEBIAN_PACKAGES="${DEBIAN_PACKAGES} iproute2 iputils-ping ifupdown isc-dhcp-client wpasupplicant"

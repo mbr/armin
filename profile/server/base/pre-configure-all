@@ -1,0 +1,14 @@
+MACHINE_ID_FILE="${CHROOTDIR}/etc/machine-id"
+
+# create proper fstab
+cat >> "${CHROOTDIR}/etc/fstab" <<EOF
+proc            /proc           proc    defaults          0       0
+/dev/mmcblk0p1  /boot/firmware  vfat    defaults,rw,noatime,nodiratime,errors=remount-ro  0   2
+/dev/mmcblk0p2  /               ext4    defaults,rw,noatime,nodiratime,errors=remount-ro  0   1
+EOF
+
+# create the machine id file, otherwise systemd will fail to setup
+echo '0123456789abcdef0123456789abcdef' > "${MACHINE_ID_FILE}"
+
+# prime dash for setup, otherwise postinst will fail
+${IN_CHROOT} /var/lib/dpkg/info/dash.preinst install

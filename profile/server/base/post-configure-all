@@ -1,0 +1,14 @@
+ROOT_PASSWORD=raspberry
+
+# set root password
+echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
+
+# enable dmesg output on tty1
+mkdir -p "${CHROOTDIR}/etc/systemd/system/getty@.service.d/"
+cat >> "${CHROOTDIR}/etc/systemd/system/getty@.service.d/noclear.conf" <<EOF
+[Service]
+TTYVTDisallocate=no
+EOF
+
+# cleanup machine id file (systemd is configured)
+rm -f "${MACHINE_ID_FILE}"

@@ -1,0 +1,31 @@
+# download firmware
+FW_REV=$(git ls-remote https://github.com/raspberrypi/firmware master | cut -f1)
+FW_SOURCE="https://github.com/raspberrypi/firmware/archive/${FW_REV}.zip"
+FW_PATH="firmware-${FW_REV}"
+FW_ZIP="${BASEDIR}/firmwares/${FW_PATH}.zip"
+
+mkdir -p $(dirname "$FW_ZIP")
+
+if ! [ -e "${FW_ZIP}" ]; then
+  echo "Downloading latest firmware (master branch): ${FW_REV}"
+  curl -L -o "${FW_ZIP}" "${FW_SOURCE}"
+fi;
+
+
+FIRMWARE_DIR="${CHROOTDIR}/boot/firmware"
+
+# extract the firmware
+mkdir -p "${FIRMWARE_DIR}/boot/firmware"
+unzip -o -j -d "${FIRMWARE_DIR}" "${FW_ZIP}" "${FW_PATH}/boot/*.bin" "${FW_PATH}/boot/*.dat" "${FW_PATH}/boot/*.elf"
+
+# setup config.txt
+cat >> "${FIRMWARE_DIR}/config.txt" <<EOF
+EOF
+
+# setup kernel commandline
+cat >> "${FIRMWARE_DIR}/cmdline.txt" <<EOF
+dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty7 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait quiet
+EOF
+
+# install firmware setup script
+install "${HOOKDIR}/install-firmware-kernel" -D "${CHROOTDIR}/etc/initramfs/post-update.d/install-firmware-kernel"

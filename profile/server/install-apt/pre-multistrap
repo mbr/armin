@@ -1,0 +1,5 @@
+# we require apt and apt-transport-https for some https repositories
+# ca-certificates is required for tls validation, as is openntpd (we need
+# accurate time to check for invalid ssl certs)
+
+DEBIAN_PACKAGES="${DEBIAN_PACKAGES} apt apt-transport-https openntpd ca-certificates"
