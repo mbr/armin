@@ -1,8 +1,12 @@
 # enable random generator so that we have entropy when generating host keys
-cat >> /etc/modules <<EOF
+MODFILE="${CHROOTDIR}/etc/modules"
+
+if ! grep -q bcm2708_rng "${MODFILE}"; then
+  cat >> ${CHROOTDIR}/etc/modules <<EOF
 # load hw-rng module to make it possible to generate ssh-host-keys on boot
 bcm2708_rng
 EOF
+fi;
 
 # cleanup fake ssh keys
 for key in ${SSH_HOST_KEYS}; do
