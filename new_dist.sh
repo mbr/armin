@@ -135,6 +135,9 @@ ${IN_CHROOT} /usr/bin/dpkg --configure -a
 # 2.9 set root password
 echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
+# 2.10 allow root login via ssh
+sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "${TARGETDIR}/etc/ssh/sshd_config"
+
 # 2.10 cleanup files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/usr/sbin/policy-rc.d"
 for key in ${SSH_HOST_KEYS}; do
