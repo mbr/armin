@@ -5,7 +5,7 @@ echo "root:${ROOT_PASSWORD}" | ${IN_CHROOT} /usr/sbin/chpasswd -c SHA512
 
 # enable dmesg output on tty1
 mkdir -p "${CHROOTDIR}/etc/systemd/system/getty@.service.d/"
-cat >> "${CHROOTDIR}/etc/systemd/system/getty@.service.d/noclear.conf" <<EOF
+cat > "${CHROOTDIR}/etc/systemd/system/getty@.service.d/noclear.conf" <<EOF
 [Service]
 TTYVTDisallocate=no
 EOF
