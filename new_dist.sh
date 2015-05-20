@@ -168,8 +168,7 @@ After=rng-tools.service
 ExecStartPre=/usr/bin/ssh-keygen -A
 EOF
 
-
-# 2.12 cleanup files no longer required
+# 2.14 cleanup files no longer required
 sudo rm -f "${MACHINE_ID_FILE}" "${QEMU_CHROOT}" "${TARGETDIR}/usr/sbin/policy-rc.d"
 for key in ${SSH_HOST_KEYS}; do
   rm "${TARGETDIR}/etc/ssh/$key"
