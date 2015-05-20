@@ -127,6 +127,7 @@ cat > "${TARGETDIR}/usr/sbin/policy-rc.d" <<EOF
 #!/bin/sh
 exit 101
 EOF
+chmod a+x "${TARGETDIR}/usr/sbin/policy-rc.d"
 
 # 2.8 configure all packages
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
