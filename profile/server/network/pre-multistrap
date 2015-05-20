@@ -1,1 +1,4 @@
-DEBIAN_PACKAGES="${DEBIAN_PACKAGES} iproute2 iputils-ping ifupdown isc-dhcp-client wpasupplicant"
+# dbus is included because it is required for systemd-timedated
+# installing dbus will automatically enabled the built-on ntp client
+
+DEBIAN_PACKAGES="${DEBIAN_PACKAGES} iproute2 iputils-ping ifupdown isc-dhcp-client wpasupplicant dbus"
