@@ -55,7 +55,7 @@ mkdir -p "${CHROOTDIR}"
 multistrap -f "${CONFFILE}" -d "${CHROOTDIR}"
 
 # 1.4 create /dev/null (otherwise scripts writing to /dev/null will create it)
-mknod "${CHROOTDIR}/dev/null" c 1 3
+mknod "${CHROOTDIR}/dev/null" c 1 3 || true
 
 # 1.5 run post-multistrap hooks
 run_hooks post-multistrap
