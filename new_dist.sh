@@ -170,8 +170,8 @@ mount "$DEV_FW" "$MOUNT_FW"
 mount "$DEV_ROOT" "$MOUNT_ROOT"
 
 # 3.4 copy over files
-rsync -rav "${TARGETDIR}/boot/firmware/" "$MOUNT_FW"
-rsync -rav --exclude="boot/firmware/" "${TARGETDIR}/" "$MOUNT_ROOT"
+rsync -ra "${TARGETDIR}/boot/firmware/" "$MOUNT_FW"
+rsync -ra --exclude="boot/firmware/" "${TARGETDIR}/" "$MOUNT_ROOT"
 mkdir -p "$MOUNT_ROOT"/boot/firmware
 
 # 3.5 cleanup
