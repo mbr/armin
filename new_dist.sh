@@ -101,14 +101,21 @@ EOF
 echo "${HOSTNAME}" > "${TARGETDIR}/etc/hostname"
 
 cat >> "${TARGETDIR}/etc/network/interfaces" <<EOF
+# loopback
+iface lo inet loopback
 auto lo
 
-iface lo inet loopback
+# eth0 (wired), automatic dhcp
 iface eth0 inet dhcp
+auto eth0
+allow-hotplug eth0
 
+# wlan0 is any additional wifi dongle
 allow-hotplug wlan0
 iface wlan0 inet manual
 wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+
+# use dhcp on default wpa supplicant network
 iface default inet dhcp
 EOF
 
