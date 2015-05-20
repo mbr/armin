@@ -4,7 +4,7 @@ ConditionPathExists=/etc/need-grow-root
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/grow-root-partition
+ExecStart=/usr/local/sbin/grow-root-partition.sh
 ExecStopPost=/bin/rm -f /etc/need-grow-root
 
 [Install]
