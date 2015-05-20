@@ -84,16 +84,22 @@ exit 101
 EOF
 chmod a+x "${CHROOTDIR}/usr/sbin/policy-rc.d"
 
-# 2.3 run preconfiguration hooks
+# 2.3 remove chfn suid (does not play well with fakeroot)
+#chmod u-s "${CHROOTDIR}/usr/bin/chfn"
+
+# 2.4 run preconfiguration hooks
 run_hooks pre-configure-all
 
-# 2.4 configure all packages
+# 2.5 configure all packages
 ${IN_CHROOT} /usr/bin/dpkg --configure -a
 
-# 2.5 run post configuration hooks
+# 2.6 run post configuration hooks
 run_hooks post-configure-all
 
-# 2.6 cleanup
+# 2.7 restore chfn
+#chmod u+s "${CHROOTDIR}/usr/bin/chfn"
+
+# 2.8 cleanup
 rm -f "${QEMU_CHROOT}" "${CHROOTDIR}/usr/sbin/policy-rc.d"
 
 
