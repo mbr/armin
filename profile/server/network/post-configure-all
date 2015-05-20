@@ -1,5 +1,5 @@
 # setup hosts file
-cat >> "${CHROOTDIR}/etc/hosts" <<EOF
+cat > "${CHROOTDIR}/etc/hosts" <<EOF
 127.0.0.1  localhost
 127.0.1.1  ${HOSTNAME}
 
@@ -12,7 +12,7 @@ ff02::2 ip6-allrouters
 EOF
 
 
-cat >> "${CHROOTDIR}/etc/network/interfaces" <<EOF
+cat > "${CHROOTDIR}/etc/network/interfaces" <<EOF
 # loopback
 iface lo inet loopback
 auto lo
