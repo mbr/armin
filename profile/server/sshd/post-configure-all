@@ -1,6 +1,3 @@
-set -x
-
-
 # enable random generator so that we have entropy when generating host keys
 echo >> /etc/modules <<EOF
 # load hw-rng module to make it possible to generate ssh-host-keys on boot
