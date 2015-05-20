@@ -2,7 +2,7 @@
 chroot_copy hosts /etc
 
 chroot_copy wired-eth0.cfg /etc/network/interfaces.d
-chroot_copy wired-wlan0.cfg /etc/network/interfaces.d
+chroot_copy wifi-wlan0.cfg /etc/network/interfaces.d
 
 # systemd-timedated will compain if /etc/localtime is not a symlink
 rm -f ${CHROOTDIR}/etc/localtime
