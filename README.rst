@@ -56,7 +56,9 @@ Building your own images is easy:
 1. Read the script. It needs to be run using sudo (due to fakechroot
 insufficiencies), to double check no ``rm`` command will run amok.
 
-2. Run ``sudo sh new_dist.sh server myimg``. This will create the
+2. Install ``multistrap``, ``qemu-user-static``, ``binfmt-support``
+
+3. Run ``sudo sh new_dist.sh server myimg``. This will create the
    necessary files in ``myimg``, apply all customizations and ultimately
    generated a new image as ``myimg/server-YYYY-MM-DD.img``.
 
