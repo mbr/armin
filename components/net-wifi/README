@@ -1,0 +1,5 @@
+Additional component that enabled wireless networking.
+
+Requires:
+
+* network
