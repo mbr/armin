@@ -1,0 +1,5 @@
+chroot_copy genissue.service /etc/systemd/system
+${IN_CHROOT} systemctl enable genissue.service
+
+# install genissue script
+chroot_install genissue /usr/local/bin

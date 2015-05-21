@@ -1,0 +1,9 @@
+[Unit]
+Description=/etc/issue generation
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/genissue
+
+[Install]
+WantedBy=multi-user.target

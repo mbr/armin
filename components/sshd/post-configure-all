@@ -18,13 +18,9 @@ sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' "${CHROOTDIR}/etc/ssh/sshd_co
 
 # install systemd files
 chroot_copy generate-host-keys.service /etc/systemd/system
-chroot_copy update-issue.service /etc/systemd/system
 chroot_copy tty-after-keygen.conf /etc/systemd/system/getty@.service.d
 chroot_copy keygen-first.conf /etc/systemd/system/ssh@.service.d
 chroot_copy keygen-first.conf /etc/systemd/system/ssh.service.d
+chroot_copy keygen-first.conf /etc/systemd/system/genissue.service.d
 
 ${IN_CHROOT} systemctl enable generate-host-keys.service
-${IN_CHROOT} systemctl enable update-issue.service
-
-# install genissue script
-chroot_install genissue /usr/local/bin
