@@ -1,0 +1,4 @@
+for i in /etc/ssh/ssh_host_*_key; do
+  set $(ssh-keygen -l -f $i)
+  printf '%b' "\033[35;1m$2\033[0m $4/$1\n" >> "${ISSUE}"
+done;

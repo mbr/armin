@@ -3,3 +3,6 @@ ${IN_CHROOT} systemctl enable genissue.service
 
 # install genissue script
 chroot_install genissue /usr/local/bin
+
+# install header fragment
+chroot_copy 10_dist.issue /etc/issue.d

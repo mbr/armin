@@ -1,0 +1,1 @@
+printf '%b' "\033[36;1mDebian\033[0m GNU/Linux $(cat /etc/debian_version) \033[33;1m\\\\n\033[0m \\\\l\n\n" >> "${ISSUE}"

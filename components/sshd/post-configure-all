@@ -24,3 +24,6 @@ chroot_copy keygen-first.conf /etc/systemd/system/ssh.service.d
 chroot_copy keygen-first.conf /etc/systemd/system/genissue.service.d
 
 ${IN_CHROOT} systemctl enable generate-host-keys.service
+
+# install extra issue files
+chroot_copy 50_ssh-host-keys.issue /etc/issue.d
