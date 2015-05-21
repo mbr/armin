@@ -1,0 +1,9 @@
+# install script
+chroot_install grow-root-partition.sh /usr/local/sbin
+
+# install service
+chroot_copy grow-root-partition.service /etc/systemd/system
+
+# enable service
+${IN_CHROOT} systemctl enable grow-root-partition.service
+${IN_CHROOT} touch /etc/need-grow-root
