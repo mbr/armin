@@ -56,7 +56,6 @@ run_hooks pre-multistrap
 
 # 1.2 setup multistrap config
 sed -i "s/##DEBIAN_PACKAGES##/${DEBIAN_PACKAGES}/g" "${CONFFILE}"
-cat "${CONFFILE}"
 
 # 1.3 run multistrap
 mkdir -p "${CHROOTDIR}"
