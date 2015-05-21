@@ -66,9 +66,10 @@ insufficiencies), to double check no ``rm`` command will run amok.
 profiles. A profile is a set of components that should be included in an image
 (through various hooks) and defines is feature set.
 
-To create a new profile named ``myprofile``, create the folder
+To create a new profile named ``myprofile``, create a directory named
 ``profiles/myprofile`` and then link any number of folders from the
-``components`` folder into it.
+``components`` folder into it. Copy and edit the ``multistrap.conf`` from the
+``server`` profile into the ``myprofile`` directory as well.
 
 
 Future work
