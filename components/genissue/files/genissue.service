@@ -1,5 +1,6 @@
 [Unit]
 Description=/etc/issue generation
+After=networking.service
 
 [Service]
 Type=oneshot
