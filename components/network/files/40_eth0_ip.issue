@@ -1,3 +1,3 @@
 ADDR=$(ip -o -4 addr list eth0 | awk '{print $4}' | cut -d '/'  -f1)
 
-printf '\neth0: %b\n' "\033[32;1m${ADDR}\033[0m"
+printf 'eth0: %b\n\n' "\033[32;1m${ADDR}\033[0m" >> ${ISSUE}
