@@ -6,3 +6,7 @@ chroot_install genissue /usr/local/bin
 
 # install header fragment
 chroot_copy 10_dist.issue /etc/issue.d
+
+# install network hooks
+chroot_install rerun-genissue /etc/network/if-up.d
+chroot_install rerun-genissue /etc/network/if-post-down.d

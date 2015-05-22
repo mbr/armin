@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# causes genissue to be run once more
+systemctl start genissue
