@@ -98,7 +98,10 @@ run_hooks post-configure-all
 # 2.7 restore chfn
 #chmod u+s "${CHROOTDIR}/usr/bin/chfn"
 
-# 2.8 cleanup
+# 2.8 daemon-reload systemd
+${IN_CHROOT} systemctl daemon-reload
+
+# 2.9 cleanup
 rm -f "${QEMU_CHROOT}" "${CHROOTDIR}/usr/sbin/policy-rc.d"
 
 
