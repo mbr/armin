@@ -6,5 +6,9 @@ After=rng-tools.service
 Type=oneshot
 ExecStart=/usr/bin/ssh-keygen -A
 
+# note: this is required, otherwise systemd will complain about starts and
+# stops that are too fast
+RemainAfterExit=yes
+
 [Install]
 WantedBy=multi-user.target
